@@ -1,41 +1,50 @@
-import dayjs from "dayjs";
+import Head from "next/head";
 import useSWR from "swr";
+import dayjs from "dayjs";
+import TodoForm from "components/todoForm";
 
 const fetcher = url => fetch(url).then(res => res.json());
+const removeTodo = todoId => {
+    fetch("/api/todos?id=" + todoId, {
+        method: "DELETE",
+        headers: {
+            "Content-Type": "application/json",
+        },
+    });
+};
 
 const tableRowItem = function (item) {
     return (
-        <tr>
-            <td>{item.id}</td>
-            <td>{item.title}</td>
-            <td>{item.description}</td>
-            <td>{dayjs(item.createdAt).format("DD/MM/YYYY HH:mm")}</td>
-            <td>{item.done ? "Sim" : "Não"}</td>
-            <td>{item.finishedAt}</td>
-        </tr>
+        <div key={item.id} className="list-item">
+            <input type={"checkbox"} />
+            <div>{item.title}</div>
+            <button onClick={() => removeTodo(item.id)}>X</button>
+        </div>
     );
 };
 
 export default function Home() {
-    const { data, error } = useSWR("/api/todos", fetcher);
-
-    if (!data) return <div>Carregando...</div>;
+    const { data, error } = useSWR("/api/todos", fetcher, {
+        refreshInterval: 10,
+    });
+    console.log(data);
+    if (error) {
+        return <div>Falha ao carregar</div>;
+    }
+    if (!data) {
+        return <div>Carregando...</div>;
+    }
 
     return (
         <div>
-            <table>
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Título</th>
-                        <th>Descrição</th>
-                        <th>Criado Em</th>
-                        <th>Finalizado</th>
-                        <th>Finalizado Em</th>
-                    </tr>
-                </thead>
-                <tbody>{data.map(item => tableRowItem(item))}</tbody>
-            </table>
+            <head>
+                <title>To-Do</title>
+                <meta name="description" content="To-Do nextJS" />
+            </head>
+
+            <TodoForm />
+
+            <div className="list">{data.map(item => tableRowItem(item))}</div>
         </div>
     );
 }

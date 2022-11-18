@@ -1,95 +1,95 @@
-import { insert, update, remove, listAll } from "modules/data/TodoDAO"
+import { insert, update, remove, listAll } from "modules/data/TodoDAO";
 
-const handlePost = async (reqParams) => {
+const handlePost = async reqParams => {
     const result = {
         status: 200,
-        data: {}
-    }
+        data: {},
+    };
 
     try {
-        const insertedObj = await insert(reqParams.data)
-        result.data = insertedObj
+        const insertedObj = await insert(reqParams.data);
+        result.data = insertedObj;
     } catch (error) {
-        result.status = 500
-        result.data = error.message
+        result.status = 500;
+        result.data = error.message;
     }
 
-    return result
-}
+    return result;
+};
 
-const handlePut = async (reqParams) => {
+const handlePut = async reqParams => {
     const result = {
         status: 200,
-        data: {}
-    }
+        data: {},
+    };
 
     try {
-        const updatedObj = await update(reqParams.data)
-        result.data = updatedObj
+        const updatedObj = await update(reqParams.data);
+        result.data = updatedObj;
     } catch (error) {
-        result.status = 500
-        result.data = error.message
+        result.status = 500;
+        result.data = error.message;
     }
 
-    return result
-}
+    return result;
+};
 
-const handleRemove = async (reqParams) => {
+const handleRemove = async reqParams => {
     const result = {
         status: 200,
-        data: {}
-    }
+        data: {},
+    };
 
     try {
-        const todoId = parseInt(reqParams.query.id)
-        const removedObj = await remove(todoId)
-        result.data = removedObj
+        const todoId = parseInt(reqParams.query.id);
+        const removedObj = await remove(todoId);
+        result.data = removedObj;
     } catch (error) {
-        result.status = 500
-        result.data = error.message
+        result.status = 500;
+        result.data = error.message;
     }
 
-    return result
-}
+    return result;
+};
 
 const handleGet = async () => {
     const result = {
         status: 200,
-        data: {}
-    }
+        data: {},
+    };
 
     try {
-        const todoList = await listAll()
+        const todoList = await listAll();
         if (todoList.length == 0) {
-            result.status = 204
+            result.data = [];
         } else {
-            result.data = todoList
+            result.data = todoList;
         }
     } catch (error) {
-        result.status = 500
-        result.data = error.message
+        result.status = 500;
+        result.data = error.message;
     }
 
-    return result
-}
+    return result;
+};
 
 const acceptedMethods = {
     POST: handlePost,
     PUT: handlePut,
     DELETE: handleRemove,
-    GET: handleGet
-}
+    GET: handleGet,
+};
 
-const handleRequest = async (reqParams) => {
+const handleRequest = async reqParams => {
     if (acceptedMethods[reqParams.method] !== undefined) {
-        let requestMetod = acceptedMethods[reqParams.method]
-        return await requestMetod(reqParams)
+        let requestMetod = acceptedMethods[reqParams.method];
+        return await requestMetod(reqParams);
     } else {
         return {
             status: 404,
-            data: {}
-        }
+            data: {},
+        };
     }
-}
+};
 
-export { handleRequest }
+export { handleRequest };
