@@ -1,0 +1,68 @@
+.todo-dialog {
+    border-radius: 2px;
+    background-color: #fff;
+    position: fixed;
+    transform: translate(-50%, -50%);
+    left: 50%;
+    top: 50%;
+    min-width: 20em;
+    border: 1px solid black;
+    box-shadow: 0px 10px 16px -2px rgba(0, 0, 0, 0.1);
+}
+
+.todo-dialog-toolbar {
+    display: flex;
+    flex: 1;
+    padding: 0.5em;
+    justify-content: space-between;
+    margin-bottom: 0.1em;
+    border-bottom: 1px solid black;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+.todo-dialog-toolbar > .close {
+    color: crimson;
+}
+.todo-dialog-toolbar > .close:hover {
+    color: red;
+}
+.todo-dialog-body {
+    display: flex;
+    flex-direction: column;
+    padding: 0.5em;
+}
+.description-input {
+    font-family: Arial, Helvetica, sans-serif;
+    resize: both;
+    min-width: 20em;
+    min-height: 5em;
+    max-height: 350px;
+    margin-top: 0.5em;
+    border-radius: 2px;
+    padding: 0.5em;
+    font-size: 1em;
+}
+
+.action-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.action-button > button {
+    flex: 1;
+    margin-top: 0.5em;
+    border-radius: 2px;
+    padding: 0.2em;
+    font-size: large;
+    border: 1px solid black;
+    background-color: forestgreen;
+    color: #fff;
+    cursor: pointer;
+}
+.action-buttons > button:hover {
+    background-color: green;
+}
