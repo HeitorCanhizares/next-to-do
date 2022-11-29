@@ -1,8 +1,8 @@
 import Head from "next/head";
 import useSWR, { useSWRConfig } from "swr";
-import TodoForm from "components/TodoForm.js";
-import TodoDialog from "components/TodoDialog.js";
 import { useState, React } from "react";
+import TodoDialog from "components/TodoDialog";
+import TodoForm from "components/TodoForm";
 
 const fetcher = (...args) => fetch(...args).then(res => res.json());
 
