@@ -87,7 +87,7 @@ export default function Home() {
 	const [selectedObj, setSelectedObj] = useState({});
 
 	if (error) return <div>Failed to Load</div>;
-	if (!data) return <div>Loading...</div>;
+	if (!data) return <div>Loading....</div>;
 
 	return (
 		<>
