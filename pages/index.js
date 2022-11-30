@@ -2,7 +2,7 @@ import Head from "next/head";
 import useSWR, { useSWRConfig } from "swr";
 import { useState, React } from "react";
 import TodoDialog from "components/TodoDialog";
-import TodoForm from "components/TodoForm";
+import TodoForm from "components/todoForm";
 
 const fetcher = (...args) => fetch(...args).then(res => res.json());
 
@@ -96,7 +96,7 @@ export default function Home() {
 			</Head>
 
 			<div className="container">
-				<TodoForm />
+				{/* <TodoForm /> */}
 
 				<div className="list">
 					{data.map(item =>
