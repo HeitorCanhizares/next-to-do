@@ -96,7 +96,7 @@ export default function Home() {
 			</Head>
 
 			<div className="container">
-				{/* <TodoForm /> */}
+				<TodoForm />
 
 				<div className="list">
 					{data.map(item =>
