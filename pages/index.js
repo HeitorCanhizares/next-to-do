@@ -2,7 +2,7 @@ import Head from "next/head";
 import useSWR, { useSWRConfig } from "swr";
 import { useState, React } from "react";
 import TodoDialog from "components/TodoDialog";
-import TodoForm from "components/TodoForm";
+import TodoForm from "components/todoForm";
 import {
 	Button,
 	Col,
