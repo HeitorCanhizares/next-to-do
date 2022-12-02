@@ -9,6 +9,7 @@ import {
 	Container,
 	Form,
 	ListGroup,
+	Modal,
 	Row,
 	Stack,
 } from "react-bootstrap";
@@ -30,7 +31,6 @@ const removeTodo = (e, todoId, mutate) => {
 };
 
 const updateTodo = (todo, mutate) => {
-	todo.done = !todo.done;
 	mutate("/api/todos", async todos => {
 		let result = await fetch("/api/todos", {
 			method: "PUT",
@@ -51,15 +51,21 @@ const openDialog = (item, setIsOpen, setSelectedObj) => {
 	setSelectedObj(item);
 };
 
-const tableRowItem = (item, setIsOpen, setSelectedObj, mutate) => {
+const tableRowItem = (item, handleItemClick, mutate) => {
 	return (
-		<ListGroup.Item key={item.id} variant={item.done && "success"}>
+		<ListGroup.Item
+			key={item.id}
+			variant={item.done && "success"}
+			onClick={() => handleItemClick(item)}
+		>
 			<Stack direction="horizontal" gap={2}>
 				<div className="me-auto">
 					<Form.Check
 						checked={item.done}
 						type="switch"
-						onChange={() => {
+						onClick={() => {
+							e.stopPropagation();
+							item.done = !item.done;
 							updateTodo(item, mutate);
 						}}
 					/>{" "}
@@ -82,9 +88,20 @@ const tableRowItem = (item, setIsOpen, setSelectedObj, mutate) => {
 export default function Home() {
 	const { mutate } = useSWRConfig();
 	const { data, error } = useSWR("/api/todos", fetcher);
-
-	const [isOpen, setIsOpen] = useState(false);
+	const [show, setShow] = useState(false);
+	const [inputTitle, setInputTitle] = useState("");
+	const [inputDescription, setInputDescription] = useState("");
 	const [selectedObj, setSelectedObj] = useState({});
+
+	const handleClose = () => setShow(false);
+	const handleShow = () => setShow(true);
+
+	const handleItemClick = item => {
+		setSelectedObj(item);
+		handleShow();
+		setInputDescription(item.description);
+		setInputTitle(item.title);
+	};
 
 	if (error) return <div>Failed to Load</div>;
 	if (!data) return <div>Loading....</div>;
@@ -101,17 +118,31 @@ export default function Home() {
 					<Col>
 						<ListGroup>
 							{data.map(item =>
-								tableRowItem(
-									item,
-									setIsOpen,
-									setSelectedObj,
-									mutate
-								)
+								tableRowItem(item, handleItemClick, mutate)
 							)}
 						</ListGroup>
 					</Col>
 				</Row>
 			</Container>
+			<Modal show={show} onHide={handleClose}>
+				<Modal.Header closeButton>Editar tarefa</Modal.Header>
+				<Modal.body></Modal.body>
+				<Modal.Footer>
+					<Button
+						variant="success"
+						onClick={() => {
+							selectedObj.title = inputTitle;
+							selectedObj.description = inputDescription;
+							updateTodo(selectedObj, mutate);
+							setInputDescription("");
+							setInputTitle("");
+							handleClose();
+						}}
+					>
+						Salvar
+					</Button>
+				</Modal.Footer>
+			</Modal>
 		</>
 	);
 }
